@@ -1,3 +1,4 @@
+use core::num;
 use std::io;
 
 enum Mode {
@@ -12,6 +13,15 @@ fn get_cel_from_far(far: &f64) -> f64 {
 
 fn get_far_from_cel(cel: &f64) -> f64 {
     cel * (9.0 / 5.0) + 32.0
+}
+
+fn get_value_from_user() -> Result<f64, num::ParseFloatError> {
+    let mut value = String::new();
+    io::stdin()
+        .read_line(&mut value)
+        .expect("An error when typing value");
+    let numeric_value: f64 = value.trim().parse()?;
+    Ok(numeric_value)
 }
 
 fn main() {
@@ -46,12 +56,7 @@ fn main() {
 
     println!("Type numeric value of choosen source");
 
-    let mut value = String::new();
-    io::stdin()
-        .read_line(&mut value)
-        .expect("An error when typing value");
-    let numeric_value: f64 = value.trim().parse().unwrap();
-
+    let numeric_value = get_value_from_user().expect("Unable to parse given value");
     match source {
         Mode::Celc => {
             let result = get_far_from_cel(&numeric_value);
