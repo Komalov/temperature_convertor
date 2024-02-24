@@ -14,8 +14,8 @@ fn get_far_from_cel(cel: &f64) -> f64 {
 }
 
 fn main() {
-    let far_symbol = String::from("f");
-    let cel_symbol = String::from("c");
+    let far_symbol = "f".to_owned();
+    let cel_symbol = "c".to_owned();
 
     let source: Mode;
 
