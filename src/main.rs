@@ -24,38 +24,39 @@ fn get_value_from_user() -> Result<f64, num::ParseFloatError> {
     Ok(numeric_value)
 }
 
-fn main() {
-    let far_symbol = "f".to_owned();
-    let cel_symbol = "c".to_owned();
+struct Symbols {
+    far: String,
+    cel: String,
+}
 
+fn get_temp_sign_from_user(symbols: Symbols) -> Mode {
     let mut source = Mode::None;
-
-    println!(
-        "You want to put celcius of fahrenheits? {}/{}",
-        cel_symbol, far_symbol
-    );
 
     while matches!(source, Mode::None) {
         let mut mode = String::new();
-        io::stdin().read_line(&mut mode).expect("An error while reading temperature sign");
+        io::stdin()
+            .read_line(&mut mode)
+            .expect("An error while reading temperature sign");
 
         mode = String::from(mode.trim());
 
-        if mode == far_symbol {
+        if mode == symbols.far {
             source = Mode::Far;
             break;
         }
 
-        if mode == cel_symbol {
+        if mode == symbols.cel {
             source = Mode::Celc;
             break;
         }
 
-        println!("Please, press only {} or {}", far_symbol, cel_symbol)
+        println!("Please, press only {} or {}", symbols.far, symbols.cel)
     }
 
-    println!("Type numeric value of choosen source");
+    source
+}
 
+fn handle_numeric_value(source: Mode) {
     let numeric_value = get_value_from_user().expect("Unable to parse given value");
     match source {
         Mode::Celc => {
@@ -68,6 +69,24 @@ fn main() {
         }
         _ => (),
     }
+}
+
+fn main() {
+    let symbols = Symbols {
+        far: "f".to_owned(),
+        cel: "c".to_owned(),
+    };
+
+    println!(
+        "You want to put celcius of fahrenheits? {}/{}",
+        symbols.cel, symbols.far
+    );
+
+    let source: Mode = get_temp_sign_from_user(symbols);
+
+    println!("Type numeric value of choosen source");
+
+    handle_numeric_value(source);
 }
 
 #[cfg(test)]
