@@ -3,6 +3,7 @@ use std::io;
 enum Mode {
     Celc,
     Far,
+    None,
 }
 
 fn get_cel_from_far(far: &f64) -> f64 {
@@ -17,14 +18,14 @@ fn main() {
     let far_symbol = "f".to_owned();
     let cel_symbol = "c".to_owned();
 
-    let source: Mode;
+    let mut source = Mode::None;
 
     println!(
         "You want to put celcius of fahrenheits? {}/{}",
         cel_symbol, far_symbol
     );
 
-    loop {
+    while matches!(source, Mode::None) {
         let mut mode = String::new();
         io::stdin().read_line(&mut mode).expect("An error while reading temperature sign");
 
@@ -60,6 +61,7 @@ fn main() {
             let result = get_cel_from_far(&numeric_value);
             println!("It is {} in celcius", result)
         }
+        _ => (),
     }
 }
 
