@@ -40,17 +40,11 @@ fn get_temp_sign_from_user(symbols: Symbols) -> Mode {
 
         mode = String::from(mode.trim());
 
-        if mode == symbols.far {
-            source = Mode::Far;
-            break;
-        }
-
-        if mode == symbols.cel {
-            source = Mode::Celc;
-            break;
-        }
-
-        println!("Please, press only {} or {}", symbols.far, symbols.cel)
+        match mode {
+            _ if mode == symbols.far => source = Mode::Far,
+            _ if mode == symbols.cel => source = Mode::Celc,
+            _ => println!("Please, press only {} or {}", symbols.far, symbols.cel),
+        };
     }
 
     source
